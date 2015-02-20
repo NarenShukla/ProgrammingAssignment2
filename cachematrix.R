@@ -3,7 +3,8 @@
 ## Following methods compute the matrix inverse, store them in
 ## cache and subsequent calls check the matrix inverse value in 
 ## cache. If available, "cached" value is returned skipping 
-## complex calculations.
+## complex calculations. It is assumed that matrix supplied is
+## always invertible
 
 
 
@@ -31,14 +32,10 @@ makeCacheMatrix <- function(x = matrix()) {
 
 ## {cacheSolve} function takes "cacheMatrix" as an argument
 ## It first checks whether inverse of the matrix is present
-## if yes, it returns the "inverse" from cache
+## if yes, it returns the "inverse" from cache.
 ## else, it calculates the "inverse" of the matrix and 
 ## sets it's value  by calling "x$setInv()".
-## It also returns the matrix inverse
-## Before calculating the inverse, it checks whether 
-## the "Determinant()" of the given matrix is 0. 
-## if yes, it displays a message that "Matrix Inverse can't be 
-## calculated". 
+## It also returns the matrix inverse.
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
@@ -46,16 +43,12 @@ cacheSolve <- function(x, ...) {
         invX <- x$getInv()
 
         if (!is.null(invX)) {
-                message("getting cached matrix data.")
+             message("getting cached matrix data.")
 
         } else {
-           d <- x$get()
-           if (det(d) == 0) {
-                message("Determinant of given matrix is 0. Can not calculate Inverse.")
-           } else {
-                invX <- solve(d,...)
-                x$setInv(invX)
-           }
+             d <- x$get()
+             invX <- solve(d,...)
+             x$setInv(invX)
         }
    invX
 }
